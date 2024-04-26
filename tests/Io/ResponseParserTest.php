@@ -4,7 +4,7 @@ namespace Clue\Tests\React\Docker\Io;
 
 use Clue\React\Docker\Io\ResponseParser;
 use Clue\Tests\React\Docker\TestCase;
-use RingCentral\Psr7\Response;
+use React\Http\Message\Response;
 
 class ResponseParserTest extends TestCase
 {
