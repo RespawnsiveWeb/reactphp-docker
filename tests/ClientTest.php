@@ -4,9 +4,9 @@ namespace Clue\Tests\React\Docker;
 
 use Clue\React\Docker\Client;
 use Psr\Http\Message\ResponseInterface;
+use React\Http\Message\Response;
 use React\Promise\Deferred;
 use React\Stream\ThroughStream;
-use RingCentral\Psr7\Response;
 
 class ClientTest extends TestCase
 {
