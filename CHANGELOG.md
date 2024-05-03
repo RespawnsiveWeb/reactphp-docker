@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.0 (2024-05-03)
+
+*   Feature: Full PHP 8.3 compatibility.
+    (#85 by @yadaiio)
+
+*   Minor documentation improvements.
+    (#83 and #86 by @yadaiio)
+
+*   Update test suite to support new Promise v3 and new reactphp/http `v1.10.0`.
+    (#82 and #84  by @clue and #87 by @SimonFrings)
+
 ## 1.4.0 (2022-12-01)
 
 *   Feature: Add support for PHP 8.1 and PHP 8.2.
