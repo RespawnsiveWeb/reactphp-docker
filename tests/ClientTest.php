@@ -59,6 +59,12 @@ class ClientTest extends TestCase
         new Client($loop);
     }
 
+    public function testCtorThrowsForInvalidLoop()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Argument #1 ($loop) expected null|React\EventLoop\LoopInterface');
+        new Client('loop');
+    }
+
     public function testCtorWithInvalidUrlThrows()
     {
         $this->setExpectedException('InvalidArgumentException');
