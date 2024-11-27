@@ -56,8 +56,12 @@ class Client
      * @param ?string        $url
      * @throws \InvalidArgumentException
      */
-    public function __construct(LoopInterface $loop = null, $url = null)
+    public function __construct($loop = null, $url = null)
     {
+        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
+            throw new \InvalidArgumentException('Argument #1 ($loop) expected null|React\EventLoop\LoopInterface');
+        }
+
         if ($url === null) {
             $url = 'unix:///var/run/docker.sock';
         }
