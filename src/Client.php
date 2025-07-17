@@ -56,12 +56,8 @@ class Client
      * @param ?string        $url
      * @throws \InvalidArgumentException
      */
-    public function __construct($loop = null, $url = null)
+    public function __construct(LoopInterface $loop = null, $url = null)
     {
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #1 ($loop) expected null|React\EventLoop\LoopInterface');
-        }
-
         if ($url === null) {
             $url = 'unix:///var/run/docker.sock';
         }
@@ -225,6 +221,43 @@ class Client
     }
 
     /**
+     * List services
+     *
+     * @return PromiseInterface Promise<array> list of container objects
+     * @link https://docs.docker.com/engine/api/v1.40/#operation/ServiceList
+     */
+    public function serviceList()
+    {
+        return $this->browser->get(
+            $this->uri->expand(
+                'services',
+                array(
+                )
+            )
+        )->then(array($this->parser, 'expectJson'));
+    }
+
+    /**
+     * List tasks from a service
+     *
+     * @return PromiseInterface Promise<array> list of tasks objects
+     * @link https://docs.docker.com/engine/api/v1.40/#operation/TaskList
+     */
+    public function taskList($service)
+    {
+        return $this->browser->get(
+            $this->uri->expand(
+                'tasks{?filter}',
+                array(
+                    'filter' => 'service=' . $service
+                )
+            )
+        )->then(array($this->parser, 'expectJson'));
+    }
+
+
+
+    /**
      * Create a container
      *
      * @param array       $config e.g. `array('Image' => 'busybox', 'Cmd' => 'date')` (see link)
@@ -263,6 +296,47 @@ class Client
             )
         )->then(array($this->parser, 'expectJson'));
     }
+
+
+    /**
+     * Return low-level information on the service id
+     *
+     * @param string $service service ID
+     * @return PromiseInterface Promise<array> service properties
+     * @link https://docs.docker.com/engine/api/v1.40/#operation/ServiceInspect
+     */
+    public function serviceInspect($service)
+    {
+        return $this->browser->get(
+            $this->uri->expand(
+                'services/{service}',
+                array(
+                    'service' => $service
+                )
+            )
+        )->then(array($this->parser, 'expectJson'));
+    }
+
+
+    /**
+     * Return low-level information on the task id
+     *
+     * @param string $task task ID
+     * @return PromiseInterface Promise<array> task properties
+     * @link https://docs.docker.com/engine/api/v1.40/#operation/TaskInspect
+     */
+    public function taskInspect($task)
+    {
+        return $this->browser->get(
+            $this->uri->expand(
+                'tasks/{task}',
+                array(
+                    'task' => $task
+                )
+            )
+        )->then(array($this->parser, 'expectJson'));
+    }
+
 
     /**
      * List processes running inside the container id
