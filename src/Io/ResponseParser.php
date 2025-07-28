@@ -38,6 +38,18 @@ class ResponseParser
         return json_decode((string)$response->getBody(), true);
     }
 
+    public function expectJsonNotAssociative(ResponseInterface $response)
+    {
+        // application/json
+
+        $data = json_decode((string)$response->getBody(), false);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode JSON: ' . json_last_error_msg());
+        }
+
+        return $data;
+    }
+
     /**
      * Returns the empty plain text body of the given $response
      *

@@ -257,7 +257,7 @@ class Client
                 'Content-Type' => 'application/json'
             ),
             $this->json($object)
-        )->then(array($this->parser, 'expectEmpty'));
+        )->then(array($this->parser, 'expectJson'));
     }
 
     /**
@@ -328,8 +328,13 @@ class Client
      * @return PromiseInterface Promise<array> service properties
      * @link https://docs.docker.com/engine/api/v1.40/#operation/ServiceInspect
      */
-    public function serviceInspect($service)
+    public function serviceInspect($service,$associative = true)
     {
+        if ($associative)
+            $type = 'expectJson' ;
+        else
+            $type = 'expectJsonNotAssociative';
+
         return $this->browser->get(
             $this->uri->expand(
                 'services/{service}',
@@ -337,7 +342,7 @@ class Client
                     'service' => $service
                 )
             )
-        )->then(array($this->parser, 'expectJson'));
+        )->then(array($this->parser, $type));
     }
 
 
