@@ -219,6 +219,7 @@ class Client
         )->then(array($this->parser, 'expectJson'));
     }
 
+
     /**
      * List services
      *
@@ -234,6 +235,29 @@ class Client
                 )
             )
         )->then(array($this->parser, 'expectJson'));
+    }
+
+    /**
+     * Update services
+     *
+     * @return PromiseInterface Promise<array> list of container objects
+     * @link https://docs.docker.com/reference/api/engine/version/v1.40/#tag/Service/operation/ServiceUpdate
+     */
+    public function serviceUpdate($service,$version,$object)
+    {
+        return $this->browser->post(
+            $this->uri->expand(
+                'services/{service}/update?registryAuthFrom=spec&version={version}',
+                array(
+                    'service' => $service,
+                    'version' => $version,
+                )
+            ),
+            array(
+                'Content-Type' => 'application/json'
+            ),
+            $this->json($object)
+        )->then(array($this->parser, 'expectEmpty'));
     }
 
     /**
