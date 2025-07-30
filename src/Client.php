@@ -266,13 +266,13 @@ class Client
      * @return PromiseInterface Promise<array> list of tasks objects
      * @link https://docs.docker.com/engine/api/v1.40/#operation/TaskList
      */
-    public function taskList($service)
+    public function taskList(array $filters = array())
     {
         return $this->browser->get(
             $this->uri->expand(
                 'tasks{?filters}',
                 array(
-                    'filters' => 'service=' . $service
+                    'filters' => $filters ? json_encode($filters) : null
                 )
             )
         )->then(array($this->parser, 'expectJson'));
