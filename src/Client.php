@@ -270,9 +270,9 @@ class Client
     {
         return $this->browser->get(
             $this->uri->expand(
-                'tasks{?filter}',
+                'tasks{?filters}',
                 array(
-                    'filter' => 'service=' . $service
+                    'filters' => 'service=' . $service
                 )
             )
         )->then(array($this->parser, 'expectJson'));
